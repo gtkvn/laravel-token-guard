@@ -52,8 +52,8 @@ class TokenGuard implements Guard
         $this->request = $request;
         $this->provider = $provider;
         $this->encrypter = $encrypter;
-        $this->inputKey = 'api_token';
-        $this->storageKey = 'api_token';
+        $this->inputKey = Token::$cookieName;
+        $this->storageKey = Token::$storageKey;
     }
 
     /**

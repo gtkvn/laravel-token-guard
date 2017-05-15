@@ -32,8 +32,8 @@ class CreateFreshApiToken
             $config = config('session');
 
             $response->cookie(
-                'api_token',
-                auth()->user()->api_token,
+                Token::$cookieName,
+                auth()->user()->{Token::$storageKey},
                 $config['lifetime'],
                 $config['path'],
                 $config['domain'],
@@ -92,7 +92,7 @@ class CreateFreshApiToken
     protected function alreadyContainsToken($response)
     {
         foreach ($response->headers->getCookies() as $cookie) {
-            if ($cookie->getName() === 'api_token') {
+            if ($cookie->getName() === Token::$cookieName) {
                 return true;
             }
         }

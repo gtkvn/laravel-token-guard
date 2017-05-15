@@ -2,6 +2,7 @@
 
 namespace Gtk\LaravelTokenGuard;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
@@ -125,7 +126,7 @@ class TokenGuard implements Guard
             $token = $this->encrypter->decrypt(
                 $this->request->cookie($this->inputKey)
             );
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return;
         }
 

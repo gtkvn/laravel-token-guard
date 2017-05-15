@@ -2,8 +2,6 @@
 
 namespace Gtk\LaravelTokenGuard;
 
-use Exception;
-use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
@@ -124,47 +122,14 @@ class TokenGuard implements Guard
         // first decrypt the cookie and then attempt to find the token value within the
         // database. If we can't decrypt the value we'll bail out with a null return.
         try {
-            $token = $this->decodeJwtTokenCookie();
-        } catch (Exception $e) {
+            $token = $this->encrypter->decrypt(
+                $this->request->cookie($this->inputKey)
+            );
+        catch (Exception $e) {
             return;
         }
 
-        // We will compare the CSRF token in the decoded API token against the CSRF header
-        // sent with the request. If the two don't match then this request is sent from
-        // a valid source and we won't authenticate the request for further handling.
-        if (! $this->validCsrf($token) || time() >= $token['expiry']) {
-            return;
-        }
-
-        return $token['sub'];
-    }
-
-    /**
-     * Decode and decrypt the JWT token cookie.
-     *
-     * @param  Request  $request
-     * @return array
-     */
-    protected function decodeJwtTokenCookie()
-    {
-        return (array) JWT::decode(
-            $this->encrypter->decrypt($this->request->cookie($this->inputKey)),
-            $this->encrypter->getKey(), ['HS256']
-        );
-    }
-
-    /**
-     * Determine if the CSRF / header are valid and match.
-     *
-     * @param  array  $token
-     * @param  Request  $request
-     * @return bool
-     */
-    protected function validCsrf($token)
-    {
-        return isset($token['csrf']) && hash_equals(
-            $token['csrf'], (string) $this->request->header('X-CSRF-TOKEN')
-        );
+        return $token;
     }
 
     /**

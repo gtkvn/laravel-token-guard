@@ -33,7 +33,7 @@ class CreateFreshApiToken
 
             $response->cookie(
                 Token::$cookieName,
-                auth()->user()->{Token::$storageKey},
+                $request->user($this->guard)->{Token::$storageKey},
                 $config['lifetime'],
                 $config['path'],
                 $config['domain'],

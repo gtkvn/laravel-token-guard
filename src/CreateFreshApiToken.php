@@ -15,6 +15,16 @@ class CreateFreshApiToken
     protected $guard;
 
     /**
+     * Create a new middleware instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->token = config('token');
+    }
+
+    /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -32,8 +42,8 @@ class CreateFreshApiToken
             $config = config('session');
 
             $response->cookie(
-                Token::$cookieName,
-                $request->user($this->guard)->{Token::$storageKey},
+                $this->token['cookie_name'],
+                $this->user($request)->{$this->token['storage_key']},
                 $config['lifetime'],
                 $config['path'],
                 $config['domain'],
@@ -43,6 +53,17 @@ class CreateFreshApiToken
         }
 
         return $response;
+    }
+
+    /**
+     * Get the currently authenticated user.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return mixed
+     */
+    protected function user($request)
+    {
+        return $request->user($this->guard);
     }
 
     /**
@@ -92,7 +113,7 @@ class CreateFreshApiToken
     protected function alreadyContainsToken($response)
     {
         foreach ($response->headers->getCookies() as $cookie) {
-            if ($cookie->getName() === Token::$cookieName) {
+            if ($cookie->getName() === $this->token['cookie_name']) {
                 return true;
             }
         }

@@ -1,7 +1,5 @@
 <?php
 
-use Carbon\Carbon;
-use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Gtk\LaravelTokenGuard\TokenGuard;
 

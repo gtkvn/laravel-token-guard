@@ -46,15 +46,23 @@ class TokenGuard implements Guard
      *
      * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
      * @param  \Illuminate\Http\Request  $request
+     * @param  string $inputKey
+     * @param  string $storageKey
      * @return void
      */
-    public function __construct(UserProvider $provider, Request $request, Encrypter $encrypter)
+    public function __construct(
+        UserProvider $provider,
+        Request $request,
+        Encrypter $encrypter,
+        $inputKey = 'api_token',
+        $storageKey = 'api_token'
+    )
     {
         $this->request = $request;
         $this->provider = $provider;
         $this->encrypter = $encrypter;
-        $this->inputKey = Token::$cookieName;
-        $this->storageKey = Token::$storageKey;
+        $this->inputKey = $inputKey;
+        $this->storageKey = $storageKey;
     }
 
     /**

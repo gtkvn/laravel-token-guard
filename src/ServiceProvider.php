@@ -19,6 +19,10 @@ class ServiceProvider extends BaseServiceProvider
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'laravel-token-guard-migrations');
+
+        $this->publishes([
+            __DIR__.'/../config/token.php' => config_path('token.php'),
+        ]);
     }
 
     /**
@@ -29,7 +33,13 @@ class ServiceProvider extends BaseServiceProvider
     public function register()
     {
         Auth::extend('token', function($app, $name, array $config) {
-            return new TokenGuard(Auth::createUserProvider($config['provider']), $app['request'], $app['encrypter']);
+            return new TokenGuard(
+                Auth::createUserProvider($config['provider']),
+                $app['request'],
+                $app['encrypter'],
+                config('token.cookie_name'),
+                config('token.storage_key')
+            );
         });
     }
 }

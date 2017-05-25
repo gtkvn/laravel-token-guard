@@ -14,11 +14,9 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
-        ], 'laravel-token-guard-migrations');
+        ], 'migrations');
 
         $this->publishes([
             __DIR__.'/../config/token.php' => config_path('token.php'),

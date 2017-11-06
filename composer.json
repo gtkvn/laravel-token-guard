@@ -28,7 +28,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Cuonggt\\LaravelTokenGuard\\ServiceProvider"
+                "Gtk\\LaravelTokenGuard\\ServiceProvider"
             ]
         }
     },

@@ -17,10 +17,6 @@ class ServiceProvider extends BaseServiceProvider
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'migrations');
-
-        $this->publishes([
-            __DIR__.'/../config/token.php' => config_path('token.php'),
-        ]);
     }
 
     /**
@@ -30,17 +26,11 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/token.php', 'token'
-        );
-
         Auth::extend('token', function($app, $name, array $config) {
             return new TokenGuard(
                 Auth::createUserProvider($config['provider']),
                 $app['request'],
-                $app['encrypter'],
-                config('token.cookie_name', 'api_token'),
-                config('token.storage_key', 'api_token')
+                $app['encrypter']
             );
         });
     }

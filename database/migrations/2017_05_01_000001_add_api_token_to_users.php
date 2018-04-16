@@ -17,6 +17,7 @@ class AddApiTokenToUsers extends Migration
             $table->string('api_token', 60)->unique();
         });
     }
+
     /**
      * Reverse the migrations.
      *

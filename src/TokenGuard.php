@@ -41,7 +41,7 @@ class TokenGuard extends BaseTokenGuard
     {
         $token = $this->getTokenViaCookie();
 
-        return $token ? : parent::getTokenForRequest();
+        return $token ?: parent::getTokenForRequest();
     }
 
     /**

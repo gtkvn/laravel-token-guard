@@ -26,7 +26,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        Auth::extend('token', function($app, $name, array $config) {
+        Auth::extend('token', function ($app, $name, array $config) {
             return new TokenGuard(
                 Auth::createUserProvider($config['provider']),
                 $app['request'],
